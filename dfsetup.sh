@@ -121,11 +121,15 @@ install_Daggerfall_patched()  {
 }
 
 install_Daggerfall_icon()  {
-  cp  "TES_Daggerfall.desktop"  "${HOME}"/Desktop/  &&  printf  "Desktop  shortcut  created...\n";
-  cp  "dagger_icon.png"  "${HOME}"/.config/Daggerfall/;
-  printf  "Exec=dosbox  -conf  %s/.config/Daggerfall/dagger.conf\n"  "${HOME}"  >>  "${HOME}"/Desktop/TES_Daggerfall.desktop;
-  printf  "Icon=%s/.config/Daggerfall/dagger_icon.png"  "${HOME}"  >>  "${HOME}"/Desktop/TES_Daggerfall.desktop;
-  chmod  700  "${HOME}"/Desktop/TES_Daggerfall.desktop
+  if [[ -d "${HOME}"/Desktop/ ]]; then
+    cp  "TES_Daggerfall.desktop"  "${HOME}"/Desktop/  &&  printf  "Desktop  shortcut  created...\n";
+    cp  "dagger_icon.png"  "${HOME}"/.config/Daggerfall/;
+    printf  "Exec=dosbox  -conf  %s/.config/Daggerfall/dagger.conf\n"  "${HOME}"  >>  "${HOME}"/Desktop/TES_Daggerfall.desktop;
+    printf  "Icon=%s/.config/Daggerfall/dagger_icon.png"  "${HOME}"  >>  "${HOME}"/Desktop/TES_Daggerfall.desktop;
+    chmod  700  "${HOME}"/Desktop/TES_Daggerfall.desktop
+  else
+    printf "No \"Desktop\" directory found. Continuing..."
+  fi
 }
 
 install_Pirates()  {
@@ -167,14 +171,22 @@ uninstall_Daggerfall()  {
           printf  "Would  you  like  to  keep  your  saved  games?  [Y/n]  ";  read  -r  answerYN
             case  ${answerYN}  in
               Y|y|"")
-		rm -rf ${Install_Dir}/DAGGER/{ARENA2,DATA,README}
-		find ${Install_Dir}/DAGGER/ -type f -maxdepth 1 -exec rm -vf {} \;
+		            rm -rf "${Install_Dir}"/DAGGER/{ARENA2,DATA,README}
+		            find "${Install_Dir}"/DAGGER -maxdepth 1 -type f -exec rm -vf {} \;
 #                rm  -rf  "${Install_Dir}/DAGGER/ARENA2/"  &&  printf  "Daggerfall  removed...\n";
-		printf  "Daggerfall  removed...\n";
+		            printf  "Daggerfall  removed...\n";
                 rm  -vf  "${HOME}"/{bin/Daggerfall,.config/Daggerfall/{dagger.conf,dagger_icon.png,dagger_install_dir}}  &&  printf  "Daggerfall  configuration  removed...\n";
                 rm  -vf  "${HOME}"/Desktop/TES_Daggerfall.desktop;
                 rm  -f  "${HOME}"/.config/dagger_install_dir;
                 rm  -rf  "${HOME}"/.config/Daggerfall
+                ;;
+              N|n)
+                rm  -rf  "${Install_Dir}/DAGGER"  &&  printf  "Daggerfall  removed...\n";
+                rm  -vf  "${HOME}"/{bin/Daggerfall,.config/Daggerfall/{dagger.conf,dagger_icon.png,dagger_install_dir}}  &&  printf  "Daggerfall  configuration  removed...\n";
+                rm  -vf  "${HOME}"/Desktop/TES_Daggerfall.desktop;
+                rm  -f  "${HOME}"/.config/dagger_install_dir;
+                rm  -rf  "${HOME}"/.config/Daggerfall
+                ;;
 # Here
 	    esac	
         elif  [[  -e  "${HOME}"/.config/dagger_install_dir  ]];  then
