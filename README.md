@@ -7,7 +7,7 @@ This is a makeself script for the installation of The Elder Scrolls I: Arena. To
 
 Place the Arena archive and arena.sh in the same directory ("\~/project/files" in this example). Make sure "arena.sh" is executable.
 From "\~/project", execute the following: 
-```makeself makeself files/ arenaInstall.sh "Arena Installer for Linux" ./arena.sh```
+```makeself files/ arenaInstall.sh "Arena Installer for Linux" ./arenasetup.sh```
 
 You should now have an executable, self-extracting archive called "arenaInstall.sh"
 
@@ -17,9 +17,6 @@ This is a makeself script for the installation of The Elder Scrolls II: Daggerfa
 
 Place the Daggerfall archive and dagger.sh in the same directory (" ~/project/files" in this example). Make sure "dagger.sh" is executable.
 From "\~/project", execute the following: 
-```makeself makeself files/ daggerInstall.sh "Daggerfall Installer for Linux" ./dagger.sh```
+```makeself files/ daggerInstall.sh "Daggerfall Installer for Linux" ./dfsetup.sh```
 
 You should now have an executable, self-extracting archive called "daggerInstall.sh"
-
-## view_edit.py
-Intended to increase Daggerfall's viewing distance past its normal limit, this currently works but is extremely limited. It will only find a specific sequence of bytes instead of compensating for pixel-width changes in the options menu, and it will "only" double the viewing distance (I would like to add an option for additional distances). To be continued.
