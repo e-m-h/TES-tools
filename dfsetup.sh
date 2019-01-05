@@ -18,7 +18,7 @@
 
 DOSBox_Check=$(command -v dosbox)
 Install_Dir=${Install_Dir:-${HOME}/DOS/}
-versionNumber="v0.60"
+versionNumber="v0.61"
 
 set -e
 
@@ -312,6 +312,10 @@ Selection: "; read -r SELECTION
    ;;
   8)
    exit 0
+   ;;
+  *)
+   printf "Not an accepted option. Exiting.\n";
+   exit
    ;;
  esac 
  

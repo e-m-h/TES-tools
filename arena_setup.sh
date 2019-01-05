@@ -16,7 +16,7 @@
 #################
 
 Install_Dir=${Install_Dir:-${HOME}/DOS/}
-versionNumber="v0.2"
+versionNumber="v0.2.1"
 
 set -e
 
@@ -217,6 +217,10 @@ Selection: "; read -r SELECTION
       ;;
     5)
       exit  0
+      ;;
+    *)
+      printf "Not an accepted option. Exiting.\n";
+      exit
       ;;
   esac  
   
