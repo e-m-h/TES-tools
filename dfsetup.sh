@@ -173,9 +173,9 @@ uninstall_Daggerfall() {
      printf "Would you like to keep your saved games? [Y/n] "; read -r answerYN
       case ${answerYN} in
        Y|y|"")
-		      rm -rf "${Install_Dir}"/DAGGER/{ARENA2,DATA,README}
-		      find "${Install_Dir}"/DAGGER -maxdepth 1 -type f -exec rm -vf {} \;
-		      printf "Daggerfall removed...\n";
+	      rm -rf "${Install_Dir}"/DAGGER/{ARENA2,DATA,README}
+	      find "${Install_Dir}"/DAGGER -maxdepth 1 -type f -exec rm -vf {} \;
+	      printf "Daggerfall removed...\n";
         rm -vf "${HOME}"/{bin/Daggerfall,.config/Daggerfall/{dagger.conf,dagger_icon.png,dagger_install_dir}};
         rm -vf  "$(xdg-user-dir DESKTOP)"/TES_Daggerfall.desktop;
         rm -f "${HOME}"/.config/dagger_install_dir;
