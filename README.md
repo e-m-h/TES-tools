@@ -2,14 +2,17 @@
 Tools for TES: Arena and Daggerfall that I wrote for fun and/or convenience. The older Elder Scrolls (© 1993-2015 Bethesda Softworks LLC) games seemed to be lacking in Linux support, so these scripts are intended to help in that regard.
 
 
+## ArenaInstaller.sh
+This is a makeself archive that will install DOSBox (if necessary), download the Arena game files from Bethesda, and set up the DOSBox configuration as well as a desktop icon (if desired). 
+
 ## arena_install.sh
-This is a makeself script for the installation of The Elder Scrolls I: Arena. To create the self-extracting shell script:
+This is a makeself script for the installation of The Elder Scrolls I: Arena (used in the above "ArenaInstaller.sh". To create the self-extracting shell script:
 
-Place the Arena archive and arena.sh in the same directory ("\~/project/files" in this example). Make sure "arena_install.sh" is executable.
+Place the necessary files (looks for "arena.conf" DOSBox config and a \*.png icon) and arena_install.sh in the same directory ("\~/project/files" in this example). Make sure "arena_install.sh" is executable.
 From "\~/project", execute the following: 
-```makeself files/ arenaInstaller.sh "Arena Installer for Linux" ./arena_install.sh```
+```makeself files/ ArenaInstaller.sh "Arena Installer for Linux" ./arena_install.sh```
 
-You should now have an executable, self-extracting archive called "arenaInstaller.sh"
+You should now have an executable, self-extracting archive called "ArenaInstaller.sh"
 
 ## dagger.sh
 ###### -Needs revision-
