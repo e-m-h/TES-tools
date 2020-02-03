@@ -169,7 +169,7 @@ uninstall_Arena() {
 }
 
 uninstall_DOSBox_and_Arena() {
-  printf "Are you sure you want to uninstall DOSBox and Aren? All saved games and configuration files will be removed. [y/N] "; read -r answerYN
+  printf "Are you sure you want to uninstall DOSBox and Arena? All saved games and configuration files will be removed. [y/N] "; read -r answerYN
   case ${answerYN} in
     Y|y)
       printf "Removing DOSBox...\n";
