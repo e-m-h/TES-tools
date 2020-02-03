@@ -5,6 +5,8 @@ Tools for TES: Arena and Daggerfall that I wrote for fun and/or convenience. The
 ## ArenaInstaller.sh
 This is a makeself archive that will install DOSBox (if necessary), download the Arena game files from Bethesda, and set up the DOSBox configuration as well as a desktop icon (if desired). 
 
+Icon by blakegedye on DeviantArt - will be removed if requested by the original author
+
 ## arena_install.sh
 This is a makeself script for the installation of The Elder Scrolls I: Arena (used in the above "ArenaInstaller.sh". To create the self-extracting shell script:
 
