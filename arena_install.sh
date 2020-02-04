@@ -36,7 +36,7 @@ check_DOSBox() {
 
 check_EUID() {
   if [[ ${EUID} == 0 ]];  then
-    printf "You are running as root. Please run  as  a  normal  user.  Exiting.\n";
+    printf "You are running as root. Please run as a normal user. Exiting.\n";
     exit 1;
   fi
 }
@@ -63,13 +63,13 @@ check_existing_install() {
 install_DOSBox() {
   if [[ $(command -v apt-get) ]]; then
     printf "Ubuntu/Debian based distribution found. Installing via apt-get. You may be asked for your password...\n";
-    sudo apt-get install dosbox;
+    sudo apt-get install dosbox unzip unrar;
   elif [[ $(command -v yum) ]]; then
     printf "Fedora/Red Hat based distribution found. Installing via yum. You may be asked for your password...\n";
-    sudo yum install dosbox;
+    sudo yum install dosbox unzip unrar;
   elif [[ $(command -v zypper) ]]; then
     printf "OpenSUSE/SUSE based distribution found. Installing via zypper. You may be asked for your password...\n";
-    sudo zypper install dosbox;
+    sudo zypper install dosbox unzip unrar;
   fi
 }
 
@@ -239,3 +239,4 @@ Selection: "; read -r SELECTION
 #######
 # END #
 #######
+
