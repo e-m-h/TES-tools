@@ -17,7 +17,7 @@
 
 Install_Dir=${Install_Dir:-${HOME}/DOS/}
 ArenaURL="https://cdnstatic.bethsoft.com/elderscrolls.com/assets/files/tes/extras/Arena106Setup.zip"
-versionNumber="v0.4"
+versionNumber="v0.5"
 
 set -e
 
@@ -36,7 +36,7 @@ check_DOSBox() {
 
 check_EUID() {
   if [[ ${EUID} == 0 ]];  then
-    printf "You are running as root. Please run as a normal user. Exiting.\n";
+    printf "You are running as root. Please run  as  a  normal  user.  Exiting.\n";
     exit 1;
   fi
 }
@@ -63,13 +63,13 @@ check_existing_install() {
 install_DOSBox() {
   if [[ $(command -v apt-get) ]]; then
     printf "Ubuntu/Debian based distribution found. Installing via apt-get. You may be asked for your password...\n";
-    sudo apt-get install dosbox unzip unrar;
+    sudo apt-get install dosbox;
   elif [[ $(command -v yum) ]]; then
     printf "Fedora/Red Hat based distribution found. Installing via yum. You may be asked for your password...\n";
-    sudo yum install dosbox unzip unrar;
+    sudo yum install dosbox;
   elif [[ $(command -v zypper) ]]; then
     printf "OpenSUSE/SUSE based distribution found. Installing via zypper. You may be asked for your password...\n";
-    sudo zypper install dosbox unzip unrar;
+    sudo zypper install dosbox;
   fi
 }
 
@@ -124,6 +124,7 @@ modify_DOSBox_conf() {
   sed -i 's/aspect=false/aspect=true/' "${HOME}"/.config/Arena/arena.conf;
   sed -i 's/autolock=false/autolock=true/' "${HOME}"/.config/Arena/arena.conf;
   sed -i 's/output=surface/output=overlay/' "${HOME}"/.config/Arena/arena.conf;
+  sed -i 's/cycles=auto/cycles=max/' "${HOME}"/.config/Arena/arena.conf;
   sed -i 's/windowresolution=original/windowresolution=1024x768/' "${HOME}"/.config/Arena/arena.conf;
 #  sed -i 's/memsize=16/memsize=24/' "${HOME}"/.config/Arena/arena.conf;
   printf "dosbox -conf %s/.config/Arena/arena.conf" "${HOME}" > "${HOME}"/bin/Arena;
@@ -239,4 +240,3 @@ Selection: "; read -r SELECTION
 #######
 # END #
 #######
-
