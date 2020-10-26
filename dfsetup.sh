@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 
-#################################
+#############################
 # DAGGERFALL INSTALL SCRIPT # 
-#################################
+#############################
 # #Stages#
 # 1) Check for DOSBox (abort if not found) 
 # 2) Install DOSBox if needed (Fedora/Debian/openSUSE) 
 # 3) Unpack Daggerfall in $HOME/DOS (by default) 
 # 4) Unpack extras (DOS32A, view distance patcher, etc.)
 # 5) Modify dosbox.cfg to launch directly 
-# 6) Extra neat things 
-#########################################################
 
-###############
+
+#############
 # VARIABLES #
-###############
+#############
 
 DOSBox_Check=$(command -v dosbox)
 Install_Dir=${Install_Dir:-${HOME}/DOS/}
@@ -23,9 +22,9 @@ versionNumber="v0.61"
 set -e
 
 
-###############
+#############
 # FUNCTIONS #
-###############
+#############
 
 check_DOSBox() {
  if [[ -x ${DOSBox_Check} ]]; then
@@ -151,6 +150,8 @@ modify_DOSBox_conf() {
  sed -i 's/memsize=16/memsize=24/' "${HOME}"/.config/Daggerfall/dagger.conf;
  sed -i 's/autolock=false/autolock=true/' "${HOME}"/.config/Daggerfall/dagger.conf;
  sed -i 's/output=surface/output=overlay/' "${HOME}"/.config/Daggerfall/dagger.conf;
+# The following cycles setting was tested on a Ryzen 7 3700X, 32GB RAM, Fedora 32 system:
+# sed -i 's/cycles=auto/cycles=45000/' "${HOME}"/.config/Daggerfall/dagger.conf; 
  sed -i 's/windowresolution=original/windowresolution=1024x768/' "${HOME}"/.config/Daggerfall/dagger.conf;
  printf "dosbox -conf %s/.config/Daggerfall/dagger.conf" "${HOME}" > "${HOME}"/bin/Daggerfall;
  chmod 755 "${HOME}/bin/Daggerfall"
@@ -254,9 +255,9 @@ viewbased_Control() {
 }
 
 
-##########
+########
 # MAIN #
-##########
+########
 
 check_EUID;
 printf "*** Daggerfall Installer for Linux (%s) ***\n" "${versionNumber}";
