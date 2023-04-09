@@ -120,11 +120,11 @@ modify_DOSBox_conf() {
   mkdir -p "${HOME}"/bin/;
   cp arena.conf "${HOME}"/.config/Arena/;
   printf "@echo off\nmount c %s -freesize 600\nC:\ncd arena\narena.bat" "${Install_Dir}" >> "${HOME}"/.config/Arena/arena.conf;
-  sed -i 's/core=auto/core=normal/' "${HOME}"/.config/Arena/arena.conf;
+  sed -i 's/core=auto/core=dynamic/' "${HOME}"/.config/Arena/arena.conf;
   sed -i 's/aspect=false/aspect=true/' "${HOME}"/.config/Arena/arena.conf;
   sed -i 's/autolock=false/autolock=true/' "${HOME}"/.config/Arena/arena.conf;
   sed -i 's/output=surface/output=overlay/' "${HOME}"/.config/Arena/arena.conf;
-  sed -i 's/cycles=auto/cycles=max/' "${HOME}"/.config/Arena/arena.conf;
+  sed -i 's/cycles=auto/cycles=max limit 50000/' "${HOME}"/.config/Arena/arena.conf;
   sed -i 's/windowresolution=original/windowresolution=1024x768/' "${HOME}"/.config/Arena/arena.conf;
 #  sed -i 's/memsize=16/memsize=24/' "${HOME}"/.config/Arena/arena.conf;
   printf "dosbox -conf %s/.config/Arena/arena.conf" "${HOME}" > "${HOME}"/bin/Arena;
