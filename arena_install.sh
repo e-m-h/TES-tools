@@ -214,7 +214,7 @@ Selection: "; read -r SELECTION
       check_existing_install;
       install_Arena;
       modify_DOSBox_conf;
-      install_Arena_icon;
+#      install_Arena_icon;
       run_Instructions
       ;;
     2)
