@@ -15,9 +15,10 @@
 #   VARIABLES   #
 #################
 
-Install_Dir=${Install_Dir:-${HOME}/DOS/}
-ArenaURL="https://cdnstatic.bethsoft.com/elderscrolls.com/assets/files/tes/extras/Arena106Setup.zip"
-versionNumber="v0.5"
+INSTALL_DIR=${INSTALL_DIR:-${HOME}/DOS/}
+ARENA_URL="https://cdnstatic.bethsoft.com/elderscrolls.com/assets/files/tes/extras/Arena106Setup.zip"
+#ARENA_URL="/home/eric/projects/test/Arena106Setup.zip"
+VERSION="v0.6"
 
 set -e
 
@@ -42,7 +43,7 @@ check_EUID() {
 }
 
 check_existing_install() {
-  if [[ -d ${Install_Dir}/ARENA/ ]]; then
+  if [[ -d ${INSTALL_DIR}/ARENA/ ]]; then
     printf "Arena installation already found. Would you like to overwrite? [y/N] "; read -r answerYN
       case "${answerYN}" in
         Y|y)
@@ -74,14 +75,14 @@ install_DOSBox() {
 }
 
 install_Directory() {
-  printf "The install directory will be %s. Is this OK? [Y/n] " "${Install_Dir}"; read -r answerYN
+  printf "The install directory will be %s. Is this OK? [Y/n] " "${INSTALL_DIR}"; read -r answerYN
     case ${answerYN} in
       Y|y|"")
-        mkdir -p "${Install_Dir}"
+        mkdir -p "${INSTALL_DIR}"
         ;;
       N|n)
-        printf "Where would you like it installed, then? (somewhere in %s/ recommended) " "${HOME}"; read -r Install_Dir;
-        mkdir -p "${Install_Dir}"
+        printf "Where would you like it installed, then? (somewhere in %s/ recommended) " "${HOME}"; read -r INSTALL_DIR;
+        mkdir -p "${INSTALL_DIR}"
         ;;
       *)
         printf "Not an accepted option. Exiting.\n";
@@ -94,14 +95,15 @@ install_Arena() {
   if [[ $(command -v unzip) && $(command -v unrar) ]]; then
     mkdir -p "${HOME}"/.config/Arena/;
     printf "Downloading Arena...\n";
-    wget ${ArenaURL} -O "${Install_Dir}"Arena106Setup.zip
+    wget ${ARENA_URL} -O "${INSTALL_DIR}"Arena106Setup.zip
+    #cp ${ARENA_URL} "${INSTALL_DIR}"
     printf "Unpacking  Arena...\n";
-    printf "%s" "${Install_Dir}" > "${HOME}"/.config/Arena/arena_install_dir;
-    unzip "${Install_Dir}/Arena106Setup.zip" -d "${Install_Dir}"
-    unrar x "${Install_Dir}/Arena106.exe" "${Install_Dir}"
+    printf "%s" "${INSTALL_DIR}" > "${HOME}"/.config/Arena/arena_install_directory;
+    unzip "${INSTALL_DIR}/Arena106Setup.zip" -d "${INSTALL_DIR}"
+    unrar x "${INSTALL_DIR}/Arena106.exe" "${INSTALL_DIR}"
     printf "Removing installation files...\n";
-    rm -vf "${Install_Dir}"Arena106.exe;
-    rm -vf "${Install_Dir}"Arena106Setup.zip;
+    rm -vf "${INSTALL_DIR}"Arena106.exe;
+    rm -vf "${INSTALL_DIR}"Arena106Setup.zip;
   else
     printf "Both 'unzip' and 'unrar' utilities are required. Please make sure both are installed. Exiting...\n"
     exit 1
@@ -118,15 +120,24 @@ install_Arena_icon() {
 
 modify_DOSBox_conf() {
   mkdir -p "${HOME}"/bin/;
-  cp arena.conf "${HOME}"/.config/Arena/;
-  printf "@echo off\nmount c %s -freesize 600\nC:\ncd arena\narena.bat" "${Install_Dir}" >> "${HOME}"/.config/Arena/arena.conf;
-  sed -i 's/core=auto/core=dynamic/' "${HOME}"/.config/Arena/arena.conf;
-  sed -i 's/aspect=false/aspect=true/' "${HOME}"/.config/Arena/arena.conf;
-  sed -i 's/autolock=false/autolock=true/' "${HOME}"/.config/Arena/arena.conf;
-  sed -i 's/output=surface/output=overlay/' "${HOME}"/.config/Arena/arena.conf;
-  sed -i 's/cycles=auto/cycles=max limit 50000/' "${HOME}"/.config/Arena/arena.conf;
-  sed -i 's/windowresolution=original/windowresolution=1024x768/' "${HOME}"/.config/Arena/arena.conf;
-#  sed -i 's/memsize=16/memsize=24/' "${HOME}"/.config/Arena/arena.conf;
+  find "${HOME}"/.config/dosbox/ -iname "dosbox*.conf" -exec cp {} "${HOME}"/.config/Arena/arena.conf \; 2>/dev/null
+  if [[ $(dosbox -version | head -n1 | cut -f1 -d,) == 'dosbox-staging' ]]; then
+    printf "@echo off\nmount c %s -freesize 600\nC:\ncd arena\narena.bat" "${INSTALL_DIR}" >> "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/core      = auto/core      = dynamic/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/aspect             = false/aspect             = true/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/output              = surface/output              = openglpp/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/cycles    = auto/cycles    = max limit 50000/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/memsize            = 16/memsize            = 32/' "${HOME}"/.config/Arena/arena.conf;
+  else
+    printf "@echo off\nmount c %s -freesize 600\nC:\ncd arena\narena.bat" "${Install_Dir}" >> "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/core=auto/core=dynamic/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/aspect=false/aspect=true/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/autolock=false/autolock=true/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/output=surface/output=overlay/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/cycles=auto/cycles=max limit 50000/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/windowresolution=original/windowresolution=1024x768/' "${HOME}"/.config/Arena/arena.conf;
+    sed -i 's/memsize=16/memsize=32/' "${HOME}"/.config/Arena/arena.conf;
+  fi
   printf "dosbox -conf %s/.config/Arena/arena.conf" "${HOME}" > "${HOME}"/bin/Arena;
   chmod 755 "${HOME}/bin/Arena"
 }
@@ -139,19 +150,19 @@ uninstall_Arena() {
   printf "Are you sure you want to uninstall Arena? All saved games and configuration files will be removed. [y/N] "; read -r answerYN
     case ${answerYN} in
       Y|y)
-        if [[ -e "${HOME}"/.config/Arena/arena_install_dir ]]; then
-          Install_Dir=$(cat "${HOME}"/.config/Arena/arena_install_dir);
-          rm -rf "${Install_Dir}/ARENA" && printf "Arena removed...\n";
-          rm -vf "${HOME}"/{bin/Arena,.config/Arena/{arena.conf,arena_icon.png,arena_install_dir}} && printf "Arena configuration removed...\n";
+        if [[ -e "${HOME}"/.config/Arena/arena_install_directory ]]; then
+          INSTALL_DIR=$(cat "${HOME}"/.config/Arena/arena_install_directory);
+          rm -rf "${INSTALL_DIR}/ARENA" && printf "Arena removed...\n";
+          rm -vf "${HOME}"/{bin/Arena,.config/Arena/{arena.conf,arena_icon.png,arena_install_directory}} && printf "Arena configuration removed...\n";
           rm -vf "$(xdg-user-dir DESKTOP)"/TES_Arena.desktop;
-          rm -f "${HOME}"/.config/arena_install_dir;
+          rm -f "${HOME}"/.config/arena_install_directory;
           rm -rf "${HOME}"/.config/Arena
-        elif [[ -e "${HOME}"/.config/arena_install_dir ]]; then
-          Install_Dir=$(cat "${HOME}"/.config/arena_install_dir);
-          rm -rf "${Install_Dir}/ARENA" && printf "Arena removed...\n";
-          rm -vf "${HOME}"/{bin/Arena,.config/Arena/{arena.conf,arena_icon.png,arena_install_dir}} && printf "Arena configuration removed...\n";
+        elif [[ -e "${HOME}"/.config/arena_install_directory ]]; then
+          INSTALL_DIR=$(cat "${HOME}"/.config/arena_install_directory);
+          rm -rf "${INSTALL_DIR}/ARENA" && printf "Arena removed...\n";
+          rm -vf "${HOME}"/{bin/Arena,.config/Arena/{arena.conf,arena_icon.png,arena_install_directory}} && printf "Arena configuration removed...\n";
           rm -vf "$(xdg-user-dir DESKTOP)"/TES_Arena.desktop;
-          rm -f "${HOME}"/.config/arena_install_dir;
+          rm -f "${HOME}"/.config/arena_install_directory;
           rm -rf "${HOME}"/.config/Arena
         else
           printf "Arena install not found! Exiting. \n";
@@ -199,7 +210,7 @@ uninstall_DOSBox_and_Arena() {
 ############
 
 check_EUID;
-printf "*** Arena Installer for Linux (%s) ***\n" "${versionNumber}";
+printf "*** Arena Installer for Linux (%s) ***\n" "${VERSION}";
 printf "Please make your selection: \n\
 1) Install DOSBox and Arena\n\
 2) Install Arena files ONLY\n\
