@@ -17,7 +17,6 @@
 
 INSTALL_DIR=${INSTALL_DIR:-${HOME}/DOS/}
 ARENA_URL="https://cdnstatic.bethsoft.com/elderscrolls.com/assets/files/tes/extras/Arena106Setup.zip"
-#ARENA_URL="/home/eric/projects/test/Arena106Setup.zip"
 VERSION="v0.6"
 
 set -e
@@ -96,7 +95,6 @@ install_Arena() {
     mkdir -p "${HOME}"/.config/Arena/;
     printf "Downloading Arena...\n";
     wget ${ARENA_URL} -O "${INSTALL_DIR}"Arena106Setup.zip
-    #cp ${ARENA_URL} "${INSTALL_DIR}"
     printf "Unpacking  Arena...\n";
     printf "%s" "${INSTALL_DIR}" > "${HOME}"/.config/Arena/arena_install_directory;
     unzip "${INSTALL_DIR}/Arena106Setup.zip" -d "${INSTALL_DIR}"
