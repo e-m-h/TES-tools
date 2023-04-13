@@ -119,15 +119,14 @@ install_Arena_icon() {
 modify_DOSBox_conf() {
   mkdir -p "${HOME}"/bin/;
   find "${HOME}"/.config/dosbox/ -iname "dosbox*.conf" -exec cp {} "${HOME}"/.config/Arena/arena.conf \; 2>/dev/null
+  printf "@echo off\nmount c %s -freesize 600\nC:\ncd arena\narena.bat" "${INSTALL_DIR}" >> "${HOME}"/.config/Arena/arena.conf;
   if [[ $(dosbox -version | head -n1 | cut -f1 -d,) == 'dosbox-staging' ]]; then
-    printf "@echo off\nmount c %s -freesize 600\nC:\ncd arena\narena.bat" "${INSTALL_DIR}" >> "${HOME}"/.config/Arena/arena.conf;
     sed -i 's/core      = auto/core      = dynamic/' "${HOME}"/.config/Arena/arena.conf;
     sed -i 's/aspect             = false/aspect             = true/' "${HOME}"/.config/Arena/arena.conf;
     sed -i 's/output              = surface/output              = openglpp/' "${HOME}"/.config/Arena/arena.conf;
     sed -i 's/cycles    = auto/cycles    = max limit 50000/' "${HOME}"/.config/Arena/arena.conf;
     sed -i 's/memsize            = 16/memsize            = 32/' "${HOME}"/.config/Arena/arena.conf;
   else
-    printf "@echo off\nmount c %s -freesize 600\nC:\ncd arena\narena.bat" "${Install_Dir}" >> "${HOME}"/.config/Arena/arena.conf;
     sed -i 's/core=auto/core=dynamic/' "${HOME}"/.config/Arena/arena.conf;
     sed -i 's/aspect=false/aspect=true/' "${HOME}"/.config/Arena/arena.conf;
     sed -i 's/autolock=false/autolock=true/' "${HOME}"/.config/Arena/arena.conf;
