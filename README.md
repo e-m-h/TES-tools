@@ -1,5 +1,5 @@
 # TES-tools 
-Tools for TES: Arena and Daggerfall that I wrote for fun and/or convenience. The older Elder Scrolls (© Microsoft) games were lacking in Linux support, so these scripts are intended to help in that regard.
+Tools for TES: Arena and Daggerfall that I wrote for fun and convenience. The older Elder Scrolls (© Microsoft) games were lacking in Linux support, so these scripts were intended to help in that regard.If you would like to play an updated version of Daggerfall with graphical enhancements, modding capability, and more, you should check out Daggerfall Unity. 
 
 
 ## ArenaInstaller.sh
